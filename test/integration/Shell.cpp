@@ -6,6 +6,9 @@
 #include <iostream>
 #include <string>
 
+#include "monolithic_examples.h"
+
+
 namespace {
 
 binlog::SessionWriter w1(binlog::default_session());
@@ -57,7 +60,13 @@ void execute(mserialize::string_view command)
 
 } // namespace
 
-int main(int argc, const char* argv[])
+
+
+#if defined(BUILD_MONOLITHIC)
+#define main(cnt, arr)      binlog_test_shell_main(cnt, arr)
+#endif
+
+int main(int argc, const char** argv)
 {
   for (int i = 1; i < argc; ++i)
   {

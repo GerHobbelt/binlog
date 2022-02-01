@@ -12,6 +12,8 @@
 #include <limits>
 #include <type_traits>
 
+#include "monolithic_examples.h"
+
 enum class BufferType
 {
   Metadata = 0,
@@ -29,7 +31,7 @@ struct RecoveredBuffer
 
 namespace {
 
-void printLogs()
+static void printLogs()
 {
   static binlog::TextOutputStream textlog(std::cerr, "%S [%d] %m\n");
   binlog::consume(textlog);
@@ -38,7 +40,7 @@ void printLogs()
 #define STDERR_INFO(...)  BINLOG_INFO(__VA_ARGS__);  printLogs()
 #define STDERR_ERROR(...) BINLOG_ERROR(__VA_ARGS__); printLogs()
 
-void showHelp()
+static void showHelp()
 {
   std::cout <<
     "brecovery -- extract unconsumed binlog data from a memory dump\n"
@@ -65,7 +67,7 @@ void showHelp()
     ;
 }
 
-std::ostream& openFile(const std::string& path, std::ofstream& file)
+static std::ostream& openFile(const std::string& path, std::ofstream& file)
 {
   if (path == "-")
   {
@@ -76,14 +78,14 @@ std::ostream& openFile(const std::string& path, std::ofstream& file)
   return file;
 }
 
-std::array<unsigned char, 8> toArray(std::uint64_t n)
+static std::array<unsigned char, 8> toArray(std::uint64_t n)
 {
   std::array<unsigned char, 8> result{};
   memcpy(result.data(), &n, result.size());
   return result;
 }
 
-bool checkEntryBuffer(const std::vector<char>& buffer)
+static bool checkEntryBuffer(const std::vector<char>& buffer)
 {
   binlog::Range range(buffer.data(), buffer.size());
   try
@@ -103,7 +105,7 @@ bool checkEntryBuffer(const std::vector<char>& buffer)
   return true;
 }
 
-std::size_t remainingSize(std::istream& input)
+static std::size_t remainingSize(std::istream& input)
 {
   const auto pos = input.tellg();
   input.seekg(0, std::ios_base::end);
@@ -113,7 +115,7 @@ std::size_t remainingSize(std::istream& input)
   return size;
 }
 
-bool readMetadata(std::istream& input, std::vector<RecoveredBuffer>& output)
+static bool readMetadata(std::istream& input, std::vector<RecoveredBuffer>& output)
 {
   // get session ptr as a number
   void* sessionptr = nullptr;
@@ -157,7 +159,7 @@ bool readMetadata(std::istream& input, std::vector<RecoveredBuffer>& output)
   return true;
 }
 
-bool checkQueueInvariants(binlog::detail::Queue& queue)
+static bool checkQueueInvariants(binlog::detail::Queue& queue)
 {
   if (queue.writeIndex > queue.capacity)
   {
@@ -180,7 +182,7 @@ bool checkQueueInvariants(binlog::detail::Queue& queue)
   return true;
 }
 
-bool readData(std::istream& input, std::vector<RecoveredBuffer>& output)
+static bool readData(std::istream& input, std::vector<RecoveredBuffer>& output)
 {
   // get session ptr as a number
   void* sessionptr = nullptr;
@@ -240,7 +242,13 @@ bool readData(std::istream& input, std::vector<RecoveredBuffer>& output)
 
 } // namespace
 
-int main(int argc, const char* argv[])
+
+
+#if defined(BUILD_MONOLITHIC)
+#define main(cnt, arr)      binlog_brecovery_main(cnt, arr)
+#endif
+
+int main(int argc, const char** argv)
 {
   if (argc < 2)
   {

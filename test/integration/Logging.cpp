@@ -2,7 +2,15 @@
 
 #include <iostream>
 
-int main()
+#include "monolithic_examples.h"
+
+
+
+#if defined(BUILD_MONOLITHIC)
+#define main(cnt, arr)      binlog_test_logging_main(cnt, arr)
+#endif
+
+int main(int argc, const char** argv)
 {
   BINLOG_TRACE("Hello");
   // Outputs: TRAC Hello

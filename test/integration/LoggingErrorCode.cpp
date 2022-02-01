@@ -8,6 +8,9 @@
 #include <string>
 #include <system_error>
 
+#include "monolithic_examples.h"
+
+
 class error_category : public std::error_category
 {
 public:
@@ -15,7 +18,13 @@ public:
   std::string message(int) const override { return "Success"; }
 };
 
-int main()
+
+
+#if defined(BUILD_MONOLITHIC)
+#define main(cnt, arr)      binlog_test_errorcode_main(cnt, arr)
+#endif
+
+int main(int argc, const char** argv)
 {
   //[ec
 

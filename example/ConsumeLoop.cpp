@@ -4,14 +4,22 @@
 #include <iostream>
 #include <string>
 
-void processInput(const std::string& input, binlog::SessionWriter& writer)
+#include "monolithic_examples.h"
+
+static void processInput(const std::string& input, binlog::SessionWriter& writer)
 {
   BINLOG_INFO_W(writer, "Input received: {}", input);
   /* do processing ... */
   BINLOG_INFO_W(writer, "Input processed");
 }
 
-int main()
+
+
+#if defined(BUILD_MONOLITHIC)
+#define main(cnt, arr)      binlog_example_consume_loop_main(cnt, arr)
+#endif
+
+int main(int argc, const char** argv)
 {
   std::ofstream logfile("consumeloop.blog", std::ofstream::out|std::ofstream::binary);
 

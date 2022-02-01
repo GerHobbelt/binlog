@@ -18,13 +18,22 @@
 
 #include <iostream>
 
+#include "monolithic_examples.h"
+
+
 //[optspec
 namespace mserialize { namespace detail {
   template <typename T> struct is_optional<boost::optional<T>> : std::true_type {};
 }}
 //]
 
-int main()
+
+
+#if defined(BUILD_MONOLITHIC)
+#define main(cnt, arr)      binlog_test_boost_types_main(cnt, arr)
+#endif
+
+int main(int argc, const char** argv)
 {
   // Boost containers - no specific adoption is required
 

@@ -5,12 +5,14 @@
 #include <iostream>
 #include <string>
 
+#include "monolithic_examples.h"
+
 #define BINLOG_DEFAULT_FORMAT "%S %C [%d] %n %m (%G:%L)"
 #define BINLOG_DEFAULT_DATE_FORMAT "%Y-%m-%d %H:%M:%S.%N"
 
 namespace {
 
-std::istream& openFile(const std::string& path, std::ifstream& file)
+static std::istream& openFile(const std::string& path, std::ifstream& file)
 {
   if (path == "-")
   {
@@ -21,7 +23,7 @@ std::istream& openFile(const std::string& path, std::ifstream& file)
   return file;
 }
 
-void showHelp()
+static void showHelp()
 {
   std::cout <<
     "bread -- convert binary logfiles to human readable text\n"
@@ -92,7 +94,13 @@ void showHelp()
 
 } // namespace
 
-int main(int argc, /*const*/ char* argv[])
+
+
+#if defined(BUILD_MONOLITHIC)
+#define main(cnt, arr)      binlog_bread_main(cnt, arr)
+#endif
+
+int main(int argc, const char** argv)
 {
   std::string inputPath = "-";
   std::string format = BINLOG_DEFAULT_FORMAT "\n";

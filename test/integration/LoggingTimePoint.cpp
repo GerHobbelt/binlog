@@ -8,7 +8,15 @@
 #include <cstdlib>
 #include <iostream>
 
-int main()
+#include "monolithic_examples.h"
+
+
+
+#if defined(BUILD_MONOLITHIC)
+#define main(cnt, arr)      binlog_test_timepoint_main(cnt, arr)
+#endif
+
+int main(int argc, const char** argv)
 {
   // make testing localtime easier
   #ifdef _WIN32

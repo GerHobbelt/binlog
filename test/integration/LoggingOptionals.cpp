@@ -7,7 +7,15 @@
 #include <iostream>
 #include <optional>
 
-int main()
+#include "monolithic_examples.h"
+
+
+
+#if defined(BUILD_MONOLITHIC)
+#define main(cnt, arr)      binlog_test_optionals_main(cnt, arr)
+#endif
+
+int main(int argc, const char** argv)
 {
   // Std optional - loggable if adapt_stdoptional.hpp is included
 

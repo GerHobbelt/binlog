@@ -1,4 +1,6 @@
+#if !defined(BUILD_MONOLITHIC)
 #define DOCTEST_CONFIG_IMPLEMENT
+#endif
 #include <doctest/doctest.h>
 
 #include <mserialize/string_view.hpp>
@@ -10,11 +12,14 @@
 #include <sstream>
 #include <string>
 
-std::string g_bread_path;
-std::string g_inttest_dir;
-std::string g_src_dir;
+#include "monolithic_examples.h"
 
-std::string extension()
+
+static std::string g_bread_path;
+static std::string g_inttest_dir;
+static std::string g_src_dir;
+
+static std::string extension()
 {
   #ifdef _WIN32
     return ".exe";
@@ -23,7 +28,7 @@ std::string extension()
   #endif
 }
 
-std::string executePipeline(std::string cmd)
+static std::string executePipeline(std::string cmd)
 {
   #ifdef _WIN32
     #define popen(command, mode) _popen(command, mode)
@@ -49,13 +54,13 @@ std::string executePipeline(std::string cmd)
   return result;
 }
 
-bool fileReadable(const std::string& path)
+static bool fileReadable(const std::string& path)
 {
   std::ifstream i(path);
   return bool(i);
 }
 
-std::string expectedDataFromSource(const std::string& name)
+static std::string expectedDataFromSource(const std::string& name)
 {
   std::ostringstream result;
 
@@ -92,7 +97,7 @@ std::string expectedDataFromSource(const std::string& name)
   return result.str();
 }
 
-void runReadDiff(const std::string& name, const std::string& format)
+static void runReadDiff(const std::string& name, const std::string& format)
 {
   std::ostringstream cmd;
   cmd << g_inttest_dir << name << extension()
@@ -196,14 +201,20 @@ TEST_CASE("RecoverMetadataAndData")
   std::remove(corepath.data());
 }
 
-void initGlobals(int argc, const char* argv[])
+static void initGlobals(int argc, const char* argv[])
 {
   g_bread_path = (argc > 1) ? argv[1] : "./bread" + extension();
   g_inttest_dir = (argc > 2) ? argv[2] + std::string("/") : "./";
   g_src_dir = (argc > 3) ? argv[3] + std::string("/test/integration/") : "../test/integration/";
 }
 
-int main(int argc, const char* argv[])
+
+
+#if defined(BUILD_MONOLITHIC)
+#define main(cnt, arr)      binlog_test_integration_main(cnt, arr)
+#endif
+
+int main(int argc, const char** argv)
 {
   int testargc = argc;
   for (int i = 0; i < argc; ++i)

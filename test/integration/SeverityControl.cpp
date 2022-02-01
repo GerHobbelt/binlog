@@ -4,16 +4,24 @@
 #include <binlog/Severity.hpp>
 //]
 
-
 #include <iostream>
 
-int f()
+#include "monolithic_examples.h"
+
+
+static int f()
 {
   BINLOG_ERROR("Unexpected call to f()");
   return 0;
 }
 
-int main()
+
+
+#if defined(BUILD_MONOLITHIC)
+#define main(cnt, arr)      binlog_test_severity_control_main(cnt, arr)
+#endif
+
+int main(int argc, const char** argv)
 {
   binlog::Session& session = binlog::default_session();
   BINLOG_TRACE("Default");

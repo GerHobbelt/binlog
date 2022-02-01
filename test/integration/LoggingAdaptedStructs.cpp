@@ -4,6 +4,9 @@
 #include <iostream>
 #include <string>
 
+#include "monolithic_examples.h"
+
+
 struct Empty {};
 BINLOG_ADAPT_STRUCT(Empty)
 
@@ -84,7 +87,13 @@ BINLOG_ADAPT_STRUCT(Base, a)
 BINLOG_ADAPT_DERIVED(Derived, (Base), b, c)
 //]
 
-int main()
+
+
+#if defined(BUILD_MONOLITHIC)
+#define main(cnt, arr)      binlog_test_adapted_structs_main(cnt, arr)
+#endif
+
+int main(int argc, const char** argv)
 {
   BINLOG_INFO("{}", Empty{});
   // Outputs: Empty

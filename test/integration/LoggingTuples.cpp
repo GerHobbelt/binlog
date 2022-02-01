@@ -6,7 +6,15 @@
 #include <tuple>
 #include <utility> // pair
 
-int main()
+#include "monolithic_examples.h"
+
+
+
+#if defined(BUILD_MONOLITHIC)
+#define main(cnt, arr)      binlog_test_tuples_main(cnt, arr)
+#endif
+
+int main(int argc, const char** argv)
 {
   std::tuple<> empty;
   BINLOG_INFO("Empty tuple: {}", empty);

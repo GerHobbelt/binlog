@@ -9,6 +9,8 @@
 #include <iostream>
 #include <stdexcept>
 
+#include "monolithic_examples.h"
+
 //[ostream
 
 // Write complete binlog output to `binary`,
@@ -47,7 +49,12 @@ private:
 };
 //]
 
-int main()
+
+#if defined(BUILD_MONOLITHIC)
+#define main(cnt, arr)      binlog_example_multi_output_main(cnt, arr)
+#endif
+
+int main(int argc, const char** argv)
 {
   const std::string path = "multioutput.blog";
   BINLOG_INFO("Events below Error will be written only to the logfile: {}", path);

@@ -5,7 +5,7 @@
  *
  * As until C++20, __VA_ARGS__ cannot be empty,
  * and the macro F(...) cannot be called with
- * 0 arguments, some cleverness is requireded to handle
+ * 0 arguments, some cleverness is required to handle
  * empty loops.
  *
  * Driven by usage, the workaround picked here is
@@ -22,7 +22,7 @@
  * F macro.
  *
  * Different FOREACH implementations were
- * bechmarked. The solution below is
+ * benchmarked. The solution below is
  *  + the fastest to compile
  *  + the easiest to understand
  *  + the easiest to extend
@@ -35,10 +35,12 @@
 #include <cstdlib>
 #include <iostream>
 
-const char header_guard[] = "MSERIALIZE_DETAIL_FOREACH_HPP";
-const char prefix[] = "MSERIALIZE_";
+#include "monolithic_examples.h"
 
-void write_count(std::ostream& out, int max_count)
+static const char header_guard[] = "MSERIALIZE_DETAIL_FOREACH_HPP";
+static const char prefix[] = "MSERIALIZE_";
+
+static void write_count(std::ostream& out, int max_count)
 {
   out << "\n/** Count the number of elements in the given __VA_ARGS__ */\n"
       << "#define " << prefix << "COUNT(...) " << prefix << "EXPAND(" << prefix << "COUNT_I(__VA_ARGS__";
@@ -55,7 +57,7 @@ void write_count(std::ostream& out, int max_count)
   out << "...) a" << max_count << "\n";
 }
 
-void write_foreach(std::ostream& out, int max_iteration)
+static void write_foreach(std::ostream& out, int max_iteration)
 {
   out << "\n/** For each elem `e`, *except the first* in __VA_ARGS__, call F(d,e) */\n"
       << "#define " << prefix << "FOREACH(F, d, ...) \\\n  "
@@ -78,7 +80,13 @@ void write_foreach(std::ostream& out, int max_iteration)
   }
 }
 
-int main(int argc, const char* argv[])
+
+
+#if defined(BUILD_MONOLITHIC)
+#define main(cnt, arr)      binlog_generate_foreach_main(cnt, arr)
+#endif
+
+int main(int argc, const char** argv)
 {
   /** The max number of arguments FOREACH will call F */
   const int max_iteration = (argc >= 2) ? std::atoi(argv[1]) : 1024; // NOLINT
@@ -92,4 +100,6 @@ int main(int argc, const char* argv[])
   write_foreach(std::cout, max_iteration);
 
   std::cout << "\n#endif // " << header_guard << "\n";
+
+  return 0;
 }

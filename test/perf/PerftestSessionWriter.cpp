@@ -12,6 +12,9 @@
   #include <x86intrin.h>
 #endif
 
+#include "monolithic_examples.h"
+
+
 namespace {
 
 void doNotOptimizeBuffer(const char* buf, std::size_t size)
@@ -174,5 +177,11 @@ void BM_addEvent_OneStringArgument(benchmark::State& state)
 BENCHMARK(BM_addEvent_OneStringArgument); // NOLINT
 
 } // namespace
+
+
+
+#if defined(BUILD_MONOLITHIC)
+#define main(cnt, arr)      binlog_performance_session_writer_main(cnt, arr)
+#endif
 
 BENCHMARK_MAIN();

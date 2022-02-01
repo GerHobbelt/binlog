@@ -8,6 +8,9 @@
 #include <stdexcept>
 #include <variant>
 
+#include "monolithic_examples.h"
+
+
 struct Bad
 {
   Bad() = default;
@@ -22,7 +25,13 @@ struct Bad
 
 BINLOG_ADAPT_STRUCT(Bad)
 
-int main()
+
+
+#if defined(BUILD_MONOLITHIC)
+#define main(cnt, arr)      binlog_test_variants_main(cnt, arr)
+#endif
+
+int main(int argc, const char** argv)
 {
   // valueless_by_exception
   std::variant<int, Bad> valueless{0};
@@ -90,4 +99,5 @@ int main()
   //// Outputs: large: 254
 
   binlog::consume(std::cout);
+  return 0;
 }

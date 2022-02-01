@@ -6,7 +6,15 @@
 #include <string>
 #include <vector>
 
-int main()
+#include "monolithic_examples.h"
+
+
+
+#if defined(BUILD_MONOLITHIC)
+#define main(cnt, arr)      binlog_performance_large_log_file_main(cnt, arr)
+#endif
+
+int main(int argc, const char** argv)
 {
   BINLOG_INFO("Hello Large Logfile");
 

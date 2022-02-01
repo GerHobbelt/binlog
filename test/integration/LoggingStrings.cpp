@@ -3,10 +3,17 @@
 #include <mserialize/string_view.hpp>
 
 #include <iostream>
-
 #include <string>
 
-int main()
+#include "monolithic_examples.h"
+
+
+
+#if defined(BUILD_MONOLITHIC)
+#define main(cnt, arr)      binlog_test_strings_main(cnt, arr)
+#endif
+
+int main(int argc, const char** argv)
 {
   //[stdstr
   std::string str = "String";

@@ -2,7 +2,15 @@
 
 #include <iostream>
 
-int main()
+#include "monolithic_examples.h"
+
+
+
+#if defined(BUILD_MONOLITHIC)
+#define main(cnt, arr)      binlog_test_named_writers_main(cnt, arr)
+#endif
+
+int main(int argc, const char** argv)
 {
   binlog::Session session;
   binlog::SessionWriter writer(session);

@@ -15,6 +15,8 @@
   #include <x86intrin.h>
 #endif
 
+#include "monolithic_examples.h"
+
 // Define a log macro, similar to BINLOG_INFO_W,
 // that timestamps the event with TSC (instead of system_clock).
 //
@@ -23,7 +25,7 @@
 // minSeverity is not honored, the Event is always emitted, saving a branch.
 #define TSC_INFO_W(writer, ...) BINLOG_CREATE_SOURCE_AND_EVENT(writer, binlog::Severity::info, main, __rdtsc(), __VA_ARGS__)
 
-std::uint64_t tscFrequency()
+static std::uint64_t tscFrequency()
 {
   // Getting the tsc frequency is beyond the scope of this example.
   // There are several, platform dependant ways, e.g:
@@ -32,7 +34,12 @@ std::uint64_t tscFrequency()
   return 3'000'000'000; // For example only. Do NOT use in production.
 }
 
-int main()
+
+#if defined(BUILD_MONOLITHIC)
+#define main(cnt, arr)      binlog_example_tsc_clock_main(cnt, arr)
+#endif
+
+int main(int argc, const char** argv)
 {
   std::ofstream logfile("tscclock.blog", std::ofstream::out|std::ofstream::binary);
 

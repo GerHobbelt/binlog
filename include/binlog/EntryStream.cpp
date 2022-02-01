@@ -26,7 +26,7 @@ Range IstreamEntryStream::nextEntryPayload()
       + std::to_string(_input.gcount()) + " bytes, expected " + std::to_string(sizeof(size)));
   }
 
-  // TODO(benedek) protect agains bad alloc by limiting size?
+  // TODO(benedek) protect against bad alloc by limiting size?
   _buffer.resize(size);
   _input.read(_buffer.data(), std::streamsize(size));
   if (! _input) // payload is truncated

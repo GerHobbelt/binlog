@@ -2,6 +2,9 @@
 
 #include <iostream>
 
+#include "monolithic_examples.h"
+
+
 //[basic
 enum Enum { Alpha = 123, Beta = 124 };
 //]
@@ -32,7 +35,13 @@ typedef enum Nest::Nested NestedT; // workaround: use elaborated type specifier 
 BINLOG_ADAPT_ENUM(NestedT, Bird)
 //]
 
-int main()
+
+
+#if defined(BUILD_MONOLITHIC)
+#define main(cnt, arr)      binlog_test_enums_main(cnt, arr)
+#endif
+
+int main(int argc, const char** argv)
 {
   //[basic
   BINLOG_INFO("Enum: {}", Alpha);

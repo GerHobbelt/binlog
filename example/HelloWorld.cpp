@@ -5,9 +5,16 @@
 #include <fstream>
 #include <iostream>
 
+#include "monolithic_examples.h"
+
 //[hello
 
-int main()
+
+#if defined(BUILD_MONOLITHIC)
+#define main(cnt, arr)      binlog_example_hello_main(cnt, arr)
+#endif
+
+int main(int argc, const char** argv)
 {
   BINLOG_INFO("Hello {}!", "World");
 

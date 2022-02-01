@@ -3,10 +3,10 @@
 #include <cstring> // strchr
 #include <iostream>
 
-char* optarg = nullptr;
+const char* optarg = nullptr;
 int optind = 1;
 
-int getopt(int argc, /*const*/ char* argv[], const char* optstring)
+int getopt(int argc, const char* argv[], const char* optstring)
 {
   if (optind >= argc || argv[optind][0] != '-')
   {

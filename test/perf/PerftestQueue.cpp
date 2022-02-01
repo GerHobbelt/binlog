@@ -9,6 +9,9 @@
 #include <thread>
 #include <vector>
 
+#include "monolithic_examples.h"
+
+
 namespace {
 
 void doNotOptimizeBuffer(const char* buf, std::size_t size)
@@ -89,5 +92,11 @@ void BM_queueWrite(benchmark::State& state)
 BENCHMARK(BM_queueWrite)->Range(8, 1024); // NOLINT
 
 } // namespace
+
+
+
+#if defined(BUILD_MONOLITHIC)
+#define main(cnt, arr)      binlog_performance_queue_main(cnt, arr)
+#endif
 
 BENCHMARK_MAIN();

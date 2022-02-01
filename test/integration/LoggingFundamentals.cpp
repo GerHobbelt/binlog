@@ -3,6 +3,9 @@
 #include <cstdint>
 #include <iostream>
 
+#include "monolithic_examples.h"
+
+
 template <typename T>
 void logSigned()
 {
@@ -21,7 +24,13 @@ void logUnsigned()
   BINLOG_INFO("{} {} {} {}", a, b, c, T(40));
 }
 
-int main()
+
+
+#if defined(BUILD_MONOLITHIC)
+#define main(cnt, arr)      binlog_test_fundamentals_main(cnt, arr)
+#endif
+
+int main(int argc, const char** argv)
 {
   logSigned<signed short>(); // NOLINT
   logSigned<signed int>();
