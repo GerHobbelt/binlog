@@ -1,10 +1,10 @@
 
+#if !defined(BUILDING_BINLOG_TOOLS)
 #define DOCTEST_CONFIG_IMPLEMENT
 #include <doctest/doctest.h>
+#endif
 
 #define BUILD_MONOLITHIC 1
-#include "monolithic_examples.h"
-
 #include "monolithic_examples.h"
 
 #if defined(BUILDING_BINLOG_TOOLS)
