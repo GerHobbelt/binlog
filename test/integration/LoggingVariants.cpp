@@ -101,3 +101,11 @@ int main(int argc, const char** argv)
   binlog::consume(std::cout);
   return 0;
 }
+
+struct Adapted {};
+BINLOG_ADAPT_STRUCT(Adapted)
+
+struct NotAdapted {};
+
+static_assert(mserialize::detail::has_tag<std::variant<Adapted>>::value, "");
+static_assert(!mserialize::detail::has_tag<std::variant<NotAdapted>>::value, "");
