@@ -30,7 +30,7 @@ static std::string extension()
 
 static std::string executePipeline(std::string cmd)
 {
-  #ifdef _WIN32
+  #ifdef _MSC_VER
     #define popen(command, mode) _popen(command, mode)
     #define pclose(stream) _pclose(stream)
 
