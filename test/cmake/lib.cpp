@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-int main()
+int main(void)
 {
   BINLOG_INFO("Hello Text Output!");
 

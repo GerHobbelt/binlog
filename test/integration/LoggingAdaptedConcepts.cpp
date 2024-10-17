@@ -83,7 +83,7 @@ struct NsFoo {
 
 struct DerivedNsFoo : NsFoo {};
 
-int main()
+int main(void)
 {
   BINLOG_INFO("{}", Nothing{});
   // Outputs: Empty

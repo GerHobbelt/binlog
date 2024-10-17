@@ -1,3 +1,3 @@
 #include <binlog/binlog.hpp>
 
-int main() {}
+int main(void) {}
