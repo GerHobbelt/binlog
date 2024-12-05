@@ -72,7 +72,12 @@
 <h1 id="hello-world"><a class="toclink" href="#hello-world">Hello World</a></h1>
 <pre><code>#include &lt;binlog/binlog.hpp&gt;
 
-int main()
+
+#if defined(BUILD_MONOLITHIC)
+#define main(cnt, arr)      binlog_example_hello_main(cnt, arr)
+#endif
+
+int main(int argc, const char** argv)
 {
   BINLOG_INFO("Hello {}!", "World");
 
@@ -308,6 +313,21 @@ struct Triplet
 };
 BINLOG_ADAPT_TEMPLATE((typename A, typename B, std::size_t C), (Triplet&lt;A,B,C&gt;), a, b, c)
 </code></pre>
+<p>As of C++20, concepts can be also adapted for logging (namespaced concepts are also supported):</p>
+<pre><code>template&lt;typename T&gt;
+concept Stringable = requires(T a)
+{
+  { a.str() } -&gt; std::convertible_to&lt;std::string&gt;;
+};
+
+BINLOG_ADAPT_CONCEPT(Stringable, str)
+
+struct Foo {
+  std::string str() const { return "bar"; }
+};
+BINLOG_INFO("{}", Foo{});
+// Outputs: Stringable{ str: bar }
+</code></pre>
 <p>For more information see the Mserialize documentation on <a href="Mserialize.html#adapting-custom-types">Adapting custom types</a> and
 <a href="Mserialize.html#adapting-user-defined-recursive-types-for-visitation">Adapting user defined recursive types for visitation</a>.</p>
 <h2 id="logging-standard-types"><a class="toclink" href="#logging-standard-types">Logging Standard Types</a></h2>
@@ -395,7 +415,7 @@ compressed logfiles:</p>
 </code></pre>
 <p>With piping, a live logfile that is being written by the application can be read,
 even if log rotation is configured:</p>
-<pre><code>$ tail -c0 -F logfile.blog | bread
+<pre><code>$ tail -c +0 -F logfile.blog | bread
 </code></pre>
 <p>To customize the output and for further options, see the builtin help:</p>
 <pre><code>$ bread -h
@@ -423,7 +443,15 @@ which makes the example short. Consider the following, more explicit example:</p
 #include &lt;fstream&gt;
 #include &lt;iostream&gt;
 
-int main()
+#include "monolithic_examples.h"
+
+
+
+#if defined(BUILD_MONOLITHIC)
+#define main(cnt, arr)      binlog_example_detailed_hello_main(cnt, arr)
+#endif
+
+int main(int argc, const char** argv)
 {
   binlog::Session session;
   binlog::SessionWriter writer(session);
@@ -555,7 +583,15 @@ This is easy to do using <code>TextOutputStream</code>:</p>
 
 #include &lt;iostream&gt;
 
-int main()
+#include "monolithic_examples.h"
+
+
+
+#if defined(BUILD_MONOLITHIC)
+#define main(cnt, arr)      binlog_example_text_output_main(cnt, arr)
+#endif
+
+int main(int argc, const char** argv)
 {
   BINLOG_INFO("Hello Text Output!");
 
@@ -637,7 +673,7 @@ The Binlog test suite tests if this requirement holds on a given platform.</p>
       <hr/>
       <footer class="text-center text-muted">
         Feedback and help: <a href="https://github.com/Morgan-Stanley/binlog/issues">GitHub</a> |
-        Generated: 2022. 01. 03.
+        Generated: 2024. 12. 05.
       </footer>
       <hr/>
     </div>
