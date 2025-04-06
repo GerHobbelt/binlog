@@ -132,7 +132,7 @@ inline ClockSync systemClockSync()
   const uint64_t frequency = std::uint64_t(Period::den);
 
   return ClockSync{
-    std::uint64_t(since_epoch.count()),
+    std::uint64_t(std::chrono::duration_cast<std::chrono::nanoseconds>(since_epoch).count()),
     frequency,
     std::uint64_t(std::chrono::duration_cast<std::chrono::nanoseconds>(since_epoch).count()),
     offset,
