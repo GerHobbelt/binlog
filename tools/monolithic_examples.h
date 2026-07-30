@@ -22,6 +22,7 @@ extern "C" {
 	int binlog_test_integration_main(int argc, const char** argv);
 	int binlog_test_logging_main(int argc, const char** argv);
 	int binlog_test_adapted_structs_main(int argc, const char** argv);
+	int binlog_test_adapted_concepts_main(void);
 	int binlog_test_boost_types_main(int argc, const char** argv);
 	int binlog_test_containers_main(int argc, const char** argv);
 	int binlog_test_cstrings_main(int argc, const char** argv);

@@ -38,6 +38,7 @@ MONOLITHIC_CMD_TABLE_START()
 	{ "test_integration", {.fa = binlog_test_integration_main } },
 	{ "test_logging", {.fa = binlog_test_logging_main } },
 	{ "test_adapted_structs", {.fa = binlog_test_adapted_structs_main } },
+	{ "test_adapted_concepts", {.f = binlog_test_adapted_concepts_main } },
 	{ "test_boost_types", {.fa = binlog_test_boost_types_main } },
 	{ "test_containers", {.fa = binlog_test_containers_main } },
 	{ "test_cstrings", {.fa = binlog_test_cstrings_main } },

@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "monolithic_examples.h"
+
 // Empty
 
 template<typename T>
@@ -82,6 +84,10 @@ struct NsFoo {
 };
 
 struct DerivedNsFoo : NsFoo {};
+
+#if defined(BUILD_MONOLITHIC)
+#define main      binlog_test_adapted_concepts_main
+#endif
 
 int main(void)
 {
