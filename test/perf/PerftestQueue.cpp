@@ -1,3 +1,5 @@
+#define BENCHMARK_FAMILY_ID			"binlog_perftest_queue"
+
 #include <binlog/detail/Queue.hpp>
 #include <binlog/detail/QueueReader.hpp>
 #include <binlog/detail/QueueWriter.hpp>

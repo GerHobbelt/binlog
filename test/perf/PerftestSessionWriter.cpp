@@ -1,3 +1,5 @@
+#define BENCHMARK_FAMILY_ID			"binlog_perftest_session_writer"
+
 #include <binlog/binlog.hpp>
 
 #include <benchmark/benchmark.h>
