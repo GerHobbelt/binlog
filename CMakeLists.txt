@@ -249,6 +249,8 @@ if (BINLOG_BUILD_EXAMPLES)
   add_example(MultiOutput)
     target_link_libraries(MultiOutput binlog)
   add_example(TscClock)
+  add_example(binlog2json)
+    target_link_libraries(binlog2json binlog)
 endif()
 
 #---------------------------
